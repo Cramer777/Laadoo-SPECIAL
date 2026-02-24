@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>For LAADOO</title>
+<style>
+body{
+margin:0;
+height:100vh;
+background:linear-gradient(135deg,#fbc2eb,#a6c1ee);
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:'Segoe UI',sans-serif;
+overflow:hidden;
+transition:1s;
+}
+
+.box{
+background:rgba(255,255,255,0.95);
+padding:30px;
+border-radius:20px;
+width:420px;
+text-align:center;
+box-shadow:0 15px 30px rgba(0,0,0,0.15);
+}
+
+input{
+padding:10px;
+width:85%;
+border-radius:8px;
+border:1px solid #ccc;
+margin-top:15px;
+}
+
+button{
+margin-top:15px;
+padding:10px 25px;
+border:none;
+background:#ff7eb3;
+color:white;
+border-radius:8px;
+cursor:pointer;
+position:relative;
+}
+
+#message{
+margin-top:20px;
+min-height:80px;
+white-space:pre-line;
+}
+
+canvas{
+margin-top:15px;
+}
+
+.heart{
+position:absolute;
+font-size:20px;
+animation:floatUp 2s linear forwards;
+}
+
+@keyframes floatUp{
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-200px);opacity:0;}
+}
+
+.fade{
+opacity:0;
+}
+
+.questionBox{
+display:none;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="mainBox">
+<h2>🔐 Secret Unlocker</h2>
+<p>Enter your name</p>
+<input type="text" id="nameInput" placeholder="Your Name">
+<br>
+<button onclick="checkName()">Unlock</button>
+<div id="message"></div>
+<canvas id="catCanvas" width="260" height="230"></canvas>
+
+<div class="questionBox" id="questionBox">
+<h3>Will you smile today? 😊</h3>
+<button onclick="yesClicked()">YES</button>
+<button id="noBtn" onmouseover="moveNo()">NO</button>
+</div>
+
+</div>
+
+<audio id="bgMusic" loop>
+<source src="comethru.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+function checkName(){
+let name=document.getElementById("nameInput").value.trim().toLowerCase();
+let music=document.getElementById("bgMusic");
+
+if(name==="snehu"){   // CHANGE THIS
+
+music.volume=0.5;
+music.play();
+
+document.getElementById("message").innerText=
+"System detected: LAADOO 🍬\nDrawing something special...\n(Also... you are the cutest 😌)";
+
+createHearts();
+drawCat();
+
+}else{
+document.getElementById("message").innerText="Access Denied ❌ Not my LAADOO.";
+}
+}
+
+function createHearts(){
+for(let i=0;i<20;i++){
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*window.innerWidth+"px";
+heart.style.top=window.innerHeight+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),2000);
+}
+}
+
+function drawCat(){
+let canvas=document.getElementById("catCanvas");
+let ctx=canvas.getContext("2d");
+ctx.strokeStyle="#333";
+ctx.lineWidth=2;
+
+let steps=0;
+let interval=setInterval(()=>{
+steps++;
+
+if(steps===1){ctx.beginPath();ctx.arc(130,100,40,0,Math.PI*2);ctx.stroke();}
+if(steps===2){ctx.beginPath();ctx.moveTo(100,70);ctx.lineTo(115,40);ctx.lineTo(130,70);ctx.stroke();}
+if(steps===3){ctx.beginPath();ctx.moveTo(160,70);ctx.lineTo(145,40);ctx.lineTo(130,70);ctx.stroke();}
+if(steps===4){ctx.beginPath();ctx.arc(115,95,5,0,Math.PI*2);ctx.arc(145,95,5,0,Math.PI*2);ctx.stroke();}
+if(steps===5){ctx.beginPath();ctx.arc(130,115,10,0,Math.PI);ctx.stroke();}
+if(steps===6){writeLaadoo(ctx);}
+if(steps===7){wink(ctx);}
+if(steps===8){
+clearInterval(interval);
+setTimeout(showQuestion,1200);
+}
+
+},500);
+}
+
+function writeLaadoo(ctx){
+ctx.font="22px Segoe UI";
+ctx.fillStyle="#ff4e8b";
+ctx.fillText("LAADOO 🍬",70,200);
+}
+
+function wink(ctx){
+ctx.clearRect(110,90,10,10);
+ctx.beginPath();
+ctx.moveTo(110,95);
+ctx.lineTo(120,95);
+ctx.stroke();
+}
+
+function showQuestion(){
+document.getElementById("questionBox").style.display="block";
+}
+
+function moveNo(){
+let btn=document.getElementById("noBtn");
+btn.style.position="absolute";
+btn.style.left=Math.random()*200+"px";
+btn.style.top=Math.random()*200+"px";
+}
+
+function yesClicked(){
+document.body.style.background="#ffd6e8";
+document.getElementById("mainBox").innerHTML=
+"<h2>Good 😌</h2><p>I knew my LAADOO would smile.</p>";
+}
+
+</script>
+
+</body>
+</html>
