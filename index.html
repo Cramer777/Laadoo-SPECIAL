@@ -4,15 +4,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For LAADOO</title>
 
-<!-- Aesthetic Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+<!-- Cursive Font -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+font-family:'Great Vibes',cursive;
 }
 
 body{
@@ -20,7 +20,7 @@ height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1470&auto=format&fit=crop') no-repeat center center/cover;
+background:url('https://images.unsplash.com/photo-1499084732479-de2c02d45fc4?q=80&w=1470&auto=format&fit=crop') no-repeat center/cover;
 position:relative;
 overflow:hidden;
 }
@@ -32,8 +32,8 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(255,255,255,0.6);
-backdrop-filter:blur(6px);
+background:rgba(255,255,255,0.65);
+backdrop-filter:blur(8px);
 z-index:0;
 }
 
@@ -41,48 +41,60 @@ z-index:0;
 position:relative;
 z-index:1;
 background:rgba(255,255,255,0.9);
-padding:25px;
-border-radius:20px;
+padding:35px 25px;
+border-radius:25px;
 width:92%;
-max-width:400px;
+max-width:420px;
 text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,0.15);
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+animation:fadeUp 1.4s ease;
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(40px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 h2{
-font-weight:600;
+font-size:36px;
+margin-bottom:10px;
+}
+
+.subtitle{
+font-size:20px;
+margin-bottom:15px;
 }
 
 input{
-margin-top:15px;
-padding:12px;
+padding:14px;
 width:100%;
-border-radius:10px;
+border-radius:15px;
 border:1px solid #ddd;
 transition:0.3s;
 outline:none;
+font-size:20px;
 }
 
 input:focus{
 border-color:#ff7eb3;
-box-shadow:0 0 10px rgba(255,126,179,0.6);
+box-shadow:0 0 20px rgba(255,126,179,0.6);
 }
 
 input.glow{
-box-shadow:0 0 20px #ff4e8b;
+box-shadow:0 0 30px #ff4e8b;
 }
 
 button{
 margin-top:15px;
-padding:12px;
-border:none;
-background:#ff7eb3;
-color:white;
-border-radius:10px;
-cursor:pointer;
+padding:14px;
 width:100%;
-font-weight:500;
+border:none;
+background:linear-gradient(135deg,#ff7eb3,#ff4e8b);
+color:white;
+border-radius:15px;
+cursor:pointer;
 transition:0.3s;
+font-size:22px;
 }
 
 button:active{
@@ -91,35 +103,36 @@ transform:scale(0.96);
 
 #message{
 margin-top:20px;
-min-height:80px;
+min-height:90px;
 white-space:pre-line;
-font-size:14px;
+font-size:22px;
 }
 
 canvas{
-margin-top:15px;
+margin-top:20px;
 width:100%;
 max-width:260px;
 }
 
-.heart{
-position:absolute;
-font-size:18px;
-animation:floatUp 2s linear forwards;
-}
-
-@keyframes floatUp{
-from{transform:translateY(0);opacity:1;}
-to{transform:translateY(-180px);opacity:0;}
-}
-
 .questionBox{
 display:none;
-margin-top:15px;
+margin-top:20px;
 }
 
 #noBtn{
 position:relative;
+}
+
+.particle{
+position:absolute;
+font-size:18px;
+opacity:0.6;
+animation:float 10s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
 }
 </style>
 </head>
@@ -127,18 +140,21 @@ position:relative;
 <body>
 
 <div class="box" id="mainBox">
-<h2>🔐 Secret Unlocker</h2>
-<p>Enter your name</p>
-<input type="text" id="nameInput" placeholder="Your Name" oninput="glowInput()">
+<h2>A Little Secret 💌</h2>
+<p class="subtitle">Only for someone special</p>
+
+<input type="text" id="nameInput" placeholder="Enter your name" oninput="glowInput()">
 <button onclick="checkName()">Unlock</button>
+
 <div id="message"></div>
-<canvas id="catCanvas" width="260" height="230"></canvas>
+<canvas id="canvas" width="260" height="230"></canvas>
 
 <div class="questionBox" id="questionBox">
-<h3>Will you smile today? 😊</h3>
+<h3 style="font-size:28px;">Will you smile today? 😊</h3>
 <button onclick="yesClicked()">YES</button>
 <button id="noBtn" ontouchstart="moveNo()" onmouseover="moveNo()">NO</button>
 </div>
+
 </div>
 
 <audio id="bgMusic" loop>
@@ -146,6 +162,16 @@ position:relative;
 </audio>
 
 <script>
+
+/* floating hearts */
+for(let i=0;i<12;i++){
+let p=document.createElement("div");
+p.className="particle";
+p.innerHTML="💖";
+p.style.left=Math.random()*100+"%";
+p.style.animationDuration=(6+Math.random()*6)+"s";
+document.body.appendChild(p);
+}
 
 function glowInput(){
 let input=document.getElementById("nameInput");
@@ -160,7 +186,7 @@ function checkName(){
 let name=document.getElementById("nameInput").value.trim().toLowerCase();
 let music=document.getElementById("bgMusic");
 
-if(name==="snehu"){   // CHANGE THIS
+if(name==="snehu"){  // CHANGE THIS
 
 music.volume=0.6;
 music.play();
@@ -168,7 +194,6 @@ music.play();
 document.getElementById("message").innerText=
 "System detected: LAADOO 🍬\nDrawing something special...\n(Also... you are the cutest 😌)";
 
-createHearts();
 drawQuby();
 
 }else{
@@ -176,20 +201,8 @@ document.getElementById("message").innerText="Access Denied ❌ Not my LAADOO.";
 }
 }
 
-function createHearts(){
-for(let i=0;i<18;i++){
-let heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="💖";
-heart.style.left=Math.random()*window.innerWidth+"px";
-heart.style.top=window.innerHeight+"px";
-document.body.appendChild(heart);
-setTimeout(()=>heart.remove(),2000);
-}
-}
-
 function drawQuby(){
-let canvas=document.getElementById("catCanvas");
+let canvas=document.getElementById("canvas");
 let ctx=canvas.getContext("2d");
 ctx.strokeStyle="#333";
 ctx.lineWidth=2;
@@ -198,44 +211,27 @@ let steps=0;
 let interval=setInterval(()=>{
 steps++;
 
-// body blob
 if(steps===1){
 ctx.beginPath();
 ctx.arc(130,115,45,0,Math.PI*2);
 ctx.stroke();
 }
 
-// tiny hands
 if(steps===2){
 ctx.beginPath();
-ctx.moveTo(85,115);
-ctx.lineTo(65,105);
-ctx.moveTo(175,115);
-ctx.lineTo(195,105);
+ctx.moveTo(85,115);ctx.lineTo(65,105);
+ctx.moveTo(175,115);ctx.lineTo(195,105);
 ctx.stroke();
 }
 
-// tiny legs
 if(steps===3){
-ctx.beginPath();
-ctx.moveTo(110,160);
-ctx.lineTo(105,180);
-ctx.moveTo(150,160);
-ctx.lineTo(155,180);
-ctx.stroke();
-}
-
-// eyes
-if(steps===4){
 ctx.beginPath();
 ctx.arc(115,105,5,0,Math.PI*2);
 ctx.arc(145,105,5,0,Math.PI*2);
-ctx.fillStyle="#333";
 ctx.fill();
 }
 
-// blush
-if(steps===5){
+if(steps===4){
 ctx.fillStyle="#ff9bb3";
 ctx.beginPath();
 ctx.arc(95,115,6,0,Math.PI*2);
@@ -243,29 +239,25 @@ ctx.arc(165,115,6,0,Math.PI*2);
 ctx.fill();
 }
 
-// smile
-if(steps===6){
+if(steps===5){
 ctx.beginPath();
 ctx.arc(130,120,15,0,Math.PI);
 ctx.stroke();
 }
 
-// floating heart above head
-if(steps===7){
-ctx.font="22px Poppins";
+if(steps===6){
+ctx.font="26px Great Vibes";
 ctx.fillStyle="#ff4e8b";
 ctx.fillText("💖",120,60);
 }
 
-// write LAADOO
-if(steps===8){
-ctx.font="20px Poppins";
+if(steps===7){
+ctx.font="26px Great Vibes";
 ctx.fillStyle="#ff4e8b";
 ctx.fillText("LAADOO 🍬",70,210);
 }
 
-// wink
-if(steps===9){
+if(steps===8){
 ctx.clearRect(110,98,12,12);
 ctx.beginPath();
 ctx.moveTo(110,105);
@@ -273,29 +265,12 @@ ctx.lineTo(122,105);
 ctx.stroke();
 }
 
-if(steps===10){
+if(steps===9){
 clearInterval(interval);
-setTimeout(showQuestion,1200);
+setTimeout(()=>document.getElementById("questionBox").style.display="block",1200);
 }
 
 },450);
-}
-function writeLaadoo(ctx){
-ctx.font="20px Poppins";
-ctx.fillStyle="#ff4e8b";
-ctx.fillText("LAADOO 🍬",70,200);
-}
-
-function wink(ctx){
-ctx.clearRect(110,90,10,10);
-ctx.beginPath();
-ctx.moveTo(110,95);
-ctx.lineTo(120,95);
-ctx.stroke();
-}
-
-function showQuestion(){
-document.getElementById("questionBox").style.display="block";
 }
 
 function moveNo(){
